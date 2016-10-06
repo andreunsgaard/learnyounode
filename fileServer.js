@@ -1,10 +1,8 @@
      var http = require('http')
      var fs = require('fs')
      var server = http.createServer(function(req, res) {
- 
 
-          var datos;
-          var fichero= fs.createReadStream(process.argv[3])
+          var fichero = fs.createReadStream(process.argv[3])
           fichero.pipe(res)
      })
 
