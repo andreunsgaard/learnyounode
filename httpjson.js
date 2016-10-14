@@ -10,20 +10,26 @@
  				second: d.getSeconds()
  			};
  		},
-
+ 		"/api/unixtime": function(parsedUrl) {
+ 			return {
+ 				unixtime: (new Date(parsedUrl.query.iso)).getTime()
+ 			};
+ 		}
  	}
 
- 	server = http.createServer(function(request, response) {
- 		parsedUrl = url.parse(request.url, true);
+ 	server = http.createServer(function(req, res) {
+ 		parsedUrl = url.parse(req.url, true);
  		resource = routes[parsedUrl.pathname];
  		if (resource) {
- 			response.writeHead(200, {
+ 			res.writeHead(200, {
  				"Content-Type": "application/json"
  			});
- 			response.end(JSON.stringify(resource(parsedUrl)));
+ 			res.end(JSON.stringify(resource(parsedUrl)));
  		} else {
- 			response.writeHead(404);
- 			response.end();
+ 			res.writeHead(404);
+ 			res.end();
  		}
  	});
- 	server.listen(process.argv[2]);
+ 	server.listen(process.argv[2], function() {
+ 		console.log('escuchando el puerto', process.argv[2])
+ 	});
